@@ -2,17 +2,19 @@ package com.microservice.student.service;
 
 import com.microservice.student.entities.Student;
 import org.springframework.beans.factory.annotation.Autowired;
-import persistence.StudentRepository;
+import org.springframework.stereotype.Service;
+import com.microservice.student.persistence.StudentRepository;
 
 import java.util.List;
 
+@Service
 public class StudentServiceImpl implements IStudentService{
     @Autowired
     private StudentRepository studentRepository;
 
     @Override
     public List<Student> findAll() {
-        return null;
+        return (List<Student>) studentRepository.findAll();
     }
 
     @Override
@@ -26,7 +28,7 @@ public class StudentServiceImpl implements IStudentService{
     }
 
     @Override
-    public List<Student> findByIdCourse(Long idCourse) {
+    public List<Student> findByCourseId(Long idCourse) {
         return studentRepository.findAllByCourseId(idCourse);
     }
 }

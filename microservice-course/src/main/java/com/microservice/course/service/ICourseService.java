@@ -1,6 +1,7 @@
 package com.microservice.course.service;
 
 import com.microservice.course.entities.Course;
+import com.microservice.course.http.response.StudentByCourseResponse;
 
 import java.util.List;
 
@@ -8,4 +9,7 @@ public interface ICourseService {
     List<Course> findAll();
     Course findById(Long id);
     void save(Course course);
+
+    //metodo que llama al microservicio de estudiantes
+    StudentByCourseResponse findStudentsByIdCourse(Long idCourse);
 }

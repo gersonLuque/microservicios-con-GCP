@@ -1,4 +1,4 @@
-package persistence;
+package com.microservice.student.persistence;
 
 import com.microservice.student.entities.Student;
 import org.springframework.data.jpa.repository.Query;
