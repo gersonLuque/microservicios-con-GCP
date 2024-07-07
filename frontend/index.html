@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .download-link {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Management</h1>
+
+    <h2>All Students</h2>
+    <table id="studentsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+        <tbody id="studentsBody">
+            <!-- Students will be inserted here -->
+        </tbody>
+    </table>
+
+    <h2>Download File</h2>
+    <form id="downloadForm">
+        <label for="fileName">Enter File Name:</label>
+        <input type="text" id="fileName" name="fileName">
+        <button type="submit">Download</button>
+    </form>
+    <div id="downloadLink" class="download-link" style="display: none;">
+        <!-- Download link will be inserted here -->
+    </div>
+
+    <script>
+        // JavaScript code to interact with the API
+        const baseUrl = 'http://localhost:8080/api/student';
+
+        // Function to fetch all students
+        async function fetchStudents() {
+            try {
+                const response = await fetch(`${baseUrl}/all`);
+                const students = await response.json();
+                displayStudents(students);
+            } catch (error) {
+                console.error('Error fetching students:', error);
+            }
+        }
+
+        // Function to display students in the table
+        function displayStudents(students) {
+            const studentsBody = document.getElementById('studentsBody');
+            studentsBody.innerHTML = '';
+            students.forEach(student => {
+                const row = `<tr>
+                                <td>${student.id}</td>
+                                <td>${student.name}</td>
+                                <td>${student.age}</td>
+                                <td>${student.course}</td>
+                            </tr>`;
+                studentsBody.innerHTML += row;
+            });
+        }
+
+        // Event listener for the form submission to download file
+        document.getElementById('downloadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const fileName = document.getElementById('fileName').value.trim();
+            if (!fileName) {
+                alert('Please enter a file name.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/file/${fileName}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    a.textContent = 'Click here to download';
+                    document.getElementById('downloadLink').innerHTML = '';
+                    document.getElementById('downloadLink').appendChild(a);
+                    document.getElementById('downloadLink').style.display = 'block';
+                } else {
+                    alert('File not found or error downloading file.');
+                }
+            } catch (error) {
+                console.error('Error downloading file:', error);
+                alert('Error downloading file. Please try again later.');
+            }
+        });
+
+        // Fetch students when the page loads
+        fetchStudents();
+    </script>
+</body>
+</html>

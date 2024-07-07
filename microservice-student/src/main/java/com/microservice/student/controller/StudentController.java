@@ -1,17 +1,24 @@
 package com.microservice.student.controller;
 
 import com.microservice.student.entities.Student;
+import com.microservice.student.service.GoogleCloudStorageService;
 import com.microservice.student.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.*;
 
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
     @Autowired
     private IStudentService studentService;
+
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,5 +39,28 @@ public class StudentController {
     @GetMapping("/search-by-course/{idCourse}")
     public ResponseEntity<?> findByIdCourse(@PathVariable Long idCourse){
         return ResponseEntity.ok(studentService.findByCourseId(idCourse));
+    }
+    @GetMapping("/file/{fileName}")
+    public ResponseEntity<InputStreamResource> getStudentFile(@PathVariable String fileName) throws IOException {
+
+        GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
+        String destFilePath = "/tmp/" + fileName;
+        googleCloudStorageService.downloadFile(destFilePath);
+
+        try (FileInputStream fis = new FileInputStream(destFilePath)) {
+            File file = new File(destFilePath);
+            InputStreamResource resource = new InputStreamResource(fis);
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } catch (FileNotFoundException e) {
+            System.out.println("hola");
+            return ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
