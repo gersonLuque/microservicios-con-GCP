@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
@@ -45,19 +46,15 @@ public class StudentController {
 
         GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
         String destFilePath = "/tmp/" + fileName;
-        googleCloudStorageService.downloadFile(destFilePath);
 
-        try (FileInputStream fis = new FileInputStream(destFilePath)) {
-            File file = new File(destFilePath);
-            InputStreamResource resource = new InputStreamResource(fis);
-
+        try  {
+            InputStream inputStream = googleCloudStorageService.obtenerArchivoComoInputStream(fileName);
+            InputStreamResource resource = new InputStreamResource(inputStream);
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
-                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .body(resource);
         } catch (FileNotFoundException e) {
-            System.out.println("hola");
             return ResponseEntity.notFound().build();
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

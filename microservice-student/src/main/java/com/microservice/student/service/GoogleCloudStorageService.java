@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.channels.Channels;
 import java.nio.file.Paths;
 
 @Service
@@ -29,10 +30,17 @@ public class GoogleCloudStorageService {
         this.bucketName = "bucket-students";
     }
 
-    public void downloadFile(String destilePath)  {
-        BlobId blobId = BlobId.of(bucketName,"ejemplo.txt");
+    public InputStream obtenerArchivoComoInputStream(String nombreArchivo) throws IOException {
+        BlobId blobId = BlobId.of(bucketName, nombreArchivo);
         Blob blob = storage.get(blobId);
 
-        blob.downloadTo(Paths.get("ejemplo.txt"));
+        if (blob == null) {
+            throw new FileNotFoundException("Archivo no encontrado en el bucket");
+        }
+        return Channels.newInputStream(blob.reader());
     }
+    public void uploadFile(){
+
+    }
+
 }
