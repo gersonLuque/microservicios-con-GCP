@@ -1,16 +1,18 @@
 package com.microservice.student.service;
 
+import com.google.api.gax.paging.Page;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Blob;
-import com.google.cloud.storage.BlobId;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.channels.Channels;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GoogleCloudStorageService {
@@ -39,8 +41,22 @@ public class GoogleCloudStorageService {
         }
         return Channels.newInputStream(blob.reader());
     }
-    public void uploadFile(){
+    public void uploadFile(Path filePath) throws IOException {
+        String fileName = filePath.getFileName().toString();
+        BlobId blobId = BlobId.of(bucketName, fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
 
+        byte[] content = Files.readAllBytes(filePath);
+
+        storage.create(blobInfo, content);
     }
 
+    public List<String> listFiles() {
+        List<String> fileNames = new ArrayList<>();
+        Page<Blob> blobs = storage.list(bucketName);
+        for (Blob blob : blobs.iterateAll()) {
+            fileNames.add(blob.getName());
+        }
+        return fileNames;
+    }
 }

@@ -10,8 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -59,5 +63,32 @@ public class StudentController {
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
+        try {
+            // Guardar el archivo temporalmente en el sistema de archivos
+            Path tempFile = Files.createTempFile(file.getOriginalFilename(), null);
+            Files.write(tempFile, file.getBytes());
+
+
+            // Subir el archivo a Google Cloud Storage
+            GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
+            googleCloudStorageService.uploadFile(tempFile);
+
+            // Eliminar el archivo temporal
+
+            return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+        }
+    }
+    @GetMapping("/files")
+    public ResponseEntity<List<String>> listFiles() throws IOException {
+        GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
+        List<String> fileNames = googleCloudStorageService.listFiles();
+        return ResponseEntity.ok(fileNames);
     }
 }
