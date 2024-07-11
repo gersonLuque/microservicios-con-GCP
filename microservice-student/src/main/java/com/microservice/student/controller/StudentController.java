@@ -24,7 +24,6 @@ public class StudentController {
     @Autowired
     private IStudentService studentService;
 
-
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     private void saveStudent(@RequestBody Student student){
@@ -68,16 +67,10 @@ public class StudentController {
     @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
-            // Guardar el archivo temporalmente en el sistema de archivos
-            Path tempFile = Files.createTempFile(file.getOriginalFilename(), null);
-            Files.write(tempFile, file.getBytes());
-
 
             // Subir el archivo a Google Cloud Storage
             GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
-            googleCloudStorageService.uploadFile(tempFile);
-
-            // Eliminar el archivo temporal
+            googleCloudStorageService.uploadFile(file);
 
             return ResponseEntity.ok("File uploaded successfully: " + file.getOriginalFilename());
         } catch (IOException e) {

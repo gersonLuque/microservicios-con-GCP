@@ -5,6 +5,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.channels.Channels;
@@ -41,14 +42,10 @@ public class GoogleCloudStorageService {
         }
         return Channels.newInputStream(blob.reader());
     }
-    public void uploadFile(Path filePath) throws IOException {
-        String fileName = filePath.getFileName().toString();
-        BlobId blobId = BlobId.of(bucketName, fileName);
+    public void uploadFile(MultipartFile file) throws IOException {
+        BlobId blobId = BlobId.of(bucketName, file.getOriginalFilename());
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-
-        byte[] content = Files.readAllBytes(filePath);
-
-        storage.create(blobInfo, content);
+        storage.create(blobInfo, file.getInputStream());
     }
 
     public List<String> listFiles() {
