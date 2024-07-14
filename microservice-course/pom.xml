@@ -5,13 +5,15 @@
 	<parent>
 		<groupId>org.example</groupId>
 		<artifactId>Microservices</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>4.0-SNAPSHOT</version>
 	</parent>
 	<groupId>com.microservice.course</groupId>
 	<artifactId>microservice-course</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>microservice-course</name>
 	<description>Spring boot microService Eureka</description>
+	<packaging>jar</packaging>
+
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.2</spring-cloud.version>

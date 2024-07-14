@@ -13,12 +13,12 @@ spring:
 
       routes:
         - id : students
-          uri: http://localhost:8090
+          uri: http://student:8090
           predicates:
             - Path=/api/student/**
 
-        - id: courses
-          uri: http://localhost:9090
-          predicates:
-            - Path=/api/course/**
+#        - id: courses
+#          uri: http://localhost:9090
+#          predicates:
+#            - Path=/api/course/**
 

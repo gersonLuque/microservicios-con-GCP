@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  config:
+    image: microservice-config
+    container_name: config
+    ports:
+      - "8888:8888"
+    networks:
+      - microservice-network
+
+  eureka:
+    image: microservice-eureka
+    container_name: eureka
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config
+    networks:
+      - microservice-network
+
+  student:
+    image: microservice-student
+    container_name: student
+    ports:
+      - "8090:8090"
+    depends_on:
+      - config
+    networks:
+      - microservice-network
+
+  gateway:
+    image: microservice-gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - student
+    networks:
+      - microservice-network
+
+networks:
+  microservice-network:
+    driver: bridge
