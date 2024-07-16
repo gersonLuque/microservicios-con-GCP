@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8080/api/student";
+const baseUrl = "35.240.1.223/api/student";
 
       async function fetchStudents() {
         try {
@@ -56,7 +56,7 @@ const baseUrl = "http://localhost:8080/api/student";
             formData.append("file", file);
 
             try {
-                const response = await fetch('http://localhost:8080/api/student/upload', {
+                const response = await fetch('http://35.240.1.223/api/student/upload', {
                     method: 'POST',
                     body: formData
                 });
@@ -78,22 +78,23 @@ const baseUrl = "http://localhost:8080/api/student";
             }
         }
         document.getElementById('listFilesButton').addEventListener('click', async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/student/files');
-                if (response.ok) {
-                    const fileNames = await response.json();
-                    const fileList = document.getElementById('fileList');
-                    fileList.innerHTML = '';
-                    fileNames.forEach(fileName => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = fileName;
-                        fileList.appendChild(listItem);
-                    });
-                } else {
-                    alert('Failed to list files');
-                }
-            } catch (error) {
-                console.error('Error fetching file list:', error);
-                alert('Error fetching file list');
+          try {
+            const response = await fetch('http://35.240.1.223/api/student/files');
+            if (response.ok) {
+              const fileNames = await response.json();
+              const fileList = document.getElementById('fileList');
+              fileList.innerHTML = '';
+              fileNames.forEach(fileName => {
+                const listItem = document.createElement('li');
+                listItem.textContent = fileName;
+                listItem.classList.add('list-group-item'); // Agrega la clase de Bootstrap para list-group-item
+                fileList.appendChild(listItem);
+              });
+            } else {
+              alert('Failed to list files');
             }
-        })
+          } catch (error) {
+            console.error('Error fetching file list:', error);
+            alert('Error fetching file list');
+          }
+        });
