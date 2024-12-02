@@ -34,7 +34,3 @@ Los archivos se almacenan en **Google Cloud Storage**. Cuando un archivo es subi
 - **Spring Boot**: Framework para desarrollar los microservicios.
 - **Google Cloud Storage**: Para almacenar y gestionar los archivos subidos y descargados.
 
----
-
-Ahora el README refleja que **Student Service** es el único responsable de la subida y descarga de archivos. ¡Espero que esta versión sea la adecuada! Si necesitas más ajustes, no dudes en decírmelo.
-
