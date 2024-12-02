@@ -1,5 +1,3 @@
-¡Claro! A continuación te dejo una versión del README con un ejemplo de configuración de Kubernetes para los microservicios, incluyendo los recursos que mencionaste:
-
 ---
 
 # Aplicación de Microservicios con Kubernetes en Google Cloud
