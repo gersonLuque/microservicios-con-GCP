@@ -1,6 +1,3 @@
-¡Gracias por la corrección! Si el **File Service** no existe en tu arquitectura y solo tienes el **Student Service** para manejar la subida y descarga de archivos, te proporciono una versión corregida del README.
-
----
 
 # Aplicación de Microservicios con Kubernetes en Google Cloud
 
