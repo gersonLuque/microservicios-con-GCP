@@ -21,29 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
-//    @Autowired
-//    private IStudentService studentService;
-//
-//    @PostMapping("/create")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    private void saveStudent(@RequestBody Student student){
-//        studentService.save(student);
-//    }
-//
-//    @GetMapping("/all")
-//    public ResponseEntity<?> findAllStudent(){
-//        return ResponseEntity.ok(studentService.findAll());
-//    }
-//
-//    @GetMapping("search/{id}")
-//    public ResponseEntity<?> findById(@PathVariable Long id){
-//        return ResponseEntity.ok(studentService.findById(id));
-//    }
-//
-//    @GetMapping("/search-by-course/{idCourse}")
-//    public ResponseEntity<?> findByIdCourse(@PathVariable Long idCourse){
-//        return ResponseEntity.ok(studentService.findByCourseId(idCourse));
-//    }
+
     @GetMapping("/file/{fileName}")
     public ResponseEntity<InputStreamResource> getStudentFile(@PathVariable String fileName) throws IOException {
 
