@@ -1,5 +1,3 @@
----
-
 # Aplicación de Microservicios con Kubernetes en Google Cloud
 
 Esta aplicación está compuesta por microservicios desplegados en **Google Kubernetes Engine (GKE)**, que permiten **subir y descargar archivos** desde **Google Cloud Storage**. Los servicios están containerizados con Docker y gestionados por Kubernetes.
