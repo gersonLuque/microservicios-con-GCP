@@ -48,7 +48,6 @@ public class StudentController {
     public ResponseEntity<InputStreamResource> getStudentFile(@PathVariable String fileName) throws IOException {
 
         GoogleCloudStorageService googleCloudStorageService = new GoogleCloudStorageService();
-        String destFilePath = "/tmp/" + fileName;
 
         try  {
             InputStream inputStream = googleCloudStorageService.obtenerArchivoComoInputStream(fileName);

@@ -36,7 +36,6 @@ public class GoogleCloudStorageService {
     public InputStream obtenerArchivoComoInputStream(String nombreArchivo) throws IOException {
         BlobId blobId = BlobId.of(bucketName, nombreArchivo);
         Blob blob = storage.get(blobId);
-
         if (blob == null) {
             throw new FileNotFoundException("Archivo no encontrado en el bucket");
         }
@@ -47,7 +46,6 @@ public class GoogleCloudStorageService {
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
         storage.create(blobInfo, file.getInputStream());
     }
-
     public List<String> listFiles() {
         List<String> fileNames = new ArrayList<>();
         Page<Blob> blobs = storage.list(bucketName);
