@@ -177,6 +177,4 @@ Los archivos se almacenan en **Google Cloud Storage**. Cuando un archivo es subi
 - **Spring Boot**: Framework para desarrollar los microservicios.
 - **Google Cloud Storage**: Para almacenar y gestionar los archivos subidos y descargados.
 
----
 
-Este README incluye ejemplos de las configuraciones de Kubernetes para los microservicios de la aplicación, como el **Student Service**, **API Gateway**, **Eureka Service** y **Config Service**. Estas configuraciones definen los despliegues y servicios asociados a cada uno de los microservicios. ¡Espero que ahora esté más completo y claro!
