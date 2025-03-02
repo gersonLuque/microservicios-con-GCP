@@ -13,6 +13,23 @@ Esta aplicación está compuesta por microservicios desplegados en **Google Kube
 
 Todos los microservicios están desplegados en **Google Kubernetes Engine (GKE)** utilizando configuraciones de **Kubernetes** para gestionar el ciclo de vida de los contenedores. A continuación se presentan ejemplos de los archivos de configuración de Kubernetes para los servicios.
 
+## Comunicación entre Servicios
+
+- **Student Service** maneja la subida y descarga de archivos a **Google Cloud Storage**.
+- **Eureka** se encarga del descubrimiento y registro de los microservicios.
+- El **API Gateway** enruta las solicitudes a los microservicios adecuados, actuando como punto de entrada único.
+
+## Almacenamiento en Google Cloud Storage
+
+Los archivos se almacenan en **Google Cloud Storage**. Cuando un archivo es subido a través del **Student Service**, se le asigna un identificador único que permite su descarga posterior.
+
+## Tecnologías Usadas
+
+- **Docker**: Para crear contenedores de microservicios.
+- **Google Kubernetes Engine (GKE)**: Para la orquestación y despliegue de los microservicios en la nube.
+- **Spring Boot**: Framework para desarrollar los microservicios.
+- **Google Cloud Storage**: Para almacenar y gestionar los archivos subidos y descargados.
+
 ### Ejemplo de configuración de Kubernetes para **Student Service**
 
 ```yaml
@@ -158,21 +175,5 @@ spec:
         - containerPort: 8888
 ```
 
-## Comunicación entre Servicios
-
-- **Student Service** maneja la subida y descarga de archivos a **Google Cloud Storage**.
-- **Eureka** se encarga del descubrimiento y registro de los microservicios.
-- El **API Gateway** enruta las solicitudes a los microservicios adecuados, actuando como punto de entrada único.
-
-## Almacenamiento en Google Cloud Storage
-
-Los archivos se almacenan en **Google Cloud Storage**. Cuando un archivo es subido a través del **Student Service**, se le asigna un identificador único que permite su descarga posterior.
-
-## Tecnologías Usadas
-
-- **Docker**: Para crear contenedores de microservicios.
-- **Google Kubernetes Engine (GKE)**: Para la orquestación y despliegue de los microservicios en la nube.
-- **Spring Boot**: Framework para desarrollar los microservicios.
-- **Google Cloud Storage**: Para almacenar y gestionar los archivos subidos y descargados.
 
 
